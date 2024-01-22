@@ -6,11 +6,10 @@ import time
 import traceback
 from datetime import datetime
 
-import src as aiosocketproto
-from src.client.serializer import SerializerType
+import aiosocketproto
 
 
-class DatetimeSerializer(SerializerType):
+class DatetimeSerializer(aiosocketproto.SerializerType):
     INSTANCE = datetime
 
     @classmethod

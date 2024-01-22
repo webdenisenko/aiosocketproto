@@ -1,2 +1,6 @@
 .venv
 .idea
+/dist
+/build
+/publish.sh
+/*.egg-info
