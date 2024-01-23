@@ -9,6 +9,7 @@ class AsyncSocketClient(Serializer, Processor, Methods):
     SIGNAL_ACT = -100
     SIGNAL_PING = -200
     ACT_TIMEOUT = 15
+    PING_INTERVAL = 30
 
     reader: asyncio.StreamReader
     writer: asyncio.StreamWriter

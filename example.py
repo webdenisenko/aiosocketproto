@@ -61,6 +61,8 @@ class Example:
             except:
                 traceback.print_exc()
 
+        await socket.receive() # no more data come, just keep the connection active
+
     async def create_server(self):
         try:
             server = await aiosocketproto.start_server([9999], self.connection)
@@ -76,6 +78,17 @@ class Example:
         for type_name, value in self.TEST_TYPES.items():
             data = await client.receive()
             print(type_name.rjust(20), time.time() - self.start_timestamp, data['data'])
+
+        # example delay
+        # the connection keeps active, a ping is sent every PING_INTERVAL seconds
+        print(
+            '\n'
+            'Done!'
+            'Even if no data more is transmitted, a ping signal will be automatically sent in the background'
+            ' and control the connection status.\n\n'
+            'Stop script when you want.'
+        )
+        await client.receive()
 
     async def run(self):
         server_task = asyncio.create_task(self.create_server())

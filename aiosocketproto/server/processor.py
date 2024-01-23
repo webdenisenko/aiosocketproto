@@ -11,13 +11,14 @@ if TYPE_CHECKING:
 
 class Processor(ABC):
 
-    async def _connection_handler_wrap(self: "AsyncSocketServer", reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
+    async def _connection_handler_wrapper(self: "AsyncSocketServer", reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
         """ Safe Wrapper for income connections """
-        async def session():
+        async def session_wrapper():
             with closing(writer):
-                socket_protocol = AsyncSocketClient(reader, writer)
-                return await self.connection_handler(socket_protocol)
-        self.sessions.append(asyncio.create_task(session()))
+                session = AsyncSocketClient(reader, writer)
+                await session._keep_alive()
+                return await self.connection_handler(session)
+        self.sessions.append(asyncio.create_task(session_wrapper()))
 
     async def __aenter__(self: "AsyncSocketServer"):
         return self

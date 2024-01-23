@@ -24,7 +24,7 @@ class AsyncSocketServer(Processor):
             try:
 
                 # run server
-                protocol_server = await asyncio.start_server(server_wrap._connection_handler_wrap, '0.0.0.0', port)
+                protocol_server = await asyncio.start_server(server_wrap._connection_handler_wrapper, '0.0.0.0', port)
                 server_wrap.port = port
                 server_wrap.server = protocol_server
 
