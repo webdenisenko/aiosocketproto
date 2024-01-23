@@ -5,7 +5,7 @@ import struct
 from abc import ABC
 from typing import TYPE_CHECKING, Type, Dict
 
-from .objects.send_packet import SendPacket
+from .send_packet import SendPacket
 from .serializer import SerializerType
 
 if TYPE_CHECKING:

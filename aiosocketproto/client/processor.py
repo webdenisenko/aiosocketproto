@@ -4,7 +4,7 @@ import time
 from abc import ABC
 from typing import TYPE_CHECKING, Optional
 
-from .objects.send_packet import SendPacket
+from .send_packet import SendPacket
 
 if TYPE_CHECKING:
     from .client import AsyncSocketClient

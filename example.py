@@ -84,7 +84,8 @@ class Example:
         print(
             '\n'
             'Done!'
-            'Even if no data more is transmitted, a ping signal will be automatically sent in the background'
+            ' Even if no data more is transmitted, a ping signal will be'
+            ' automatically sent in the background'
             ' and control the connection status.\n\n'
             'Stop script when you want.'
         )
