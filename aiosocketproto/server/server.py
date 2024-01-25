@@ -9,15 +9,17 @@ class AsyncSocketServer(Processor):
     server: asyncio.Server
     sessions: List[asyncio.Task]
     connection_handler: Callable
+    debug_mode: bool
 
     @classmethod
-    async def start(cls, ports_range: List[int], connection_handler: Callable):
+    async def start(cls, ports_range: List[int], connection_handler: Callable, debug_mode: bool = False):
         """ Start a server with given ports range """
 
         # constructor
         server_wrap = cls()
         server_wrap.sessions = []
         server_wrap.connection_handler = connection_handler
+        server_wrap.debug_mode = debug_mode
 
         # find free port in range
         for port in ports_range:

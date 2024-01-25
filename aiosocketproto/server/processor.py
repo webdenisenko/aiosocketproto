@@ -15,7 +15,7 @@ class Processor(ABC):
         """ Safe Wrapper for income connections """
         async def session_wrapper():
             with closing(writer):
-                session = AsyncSocketClient(reader, writer)
+                session = AsyncSocketClient(reader, writer, self.debug_mode)
                 await session._keep_alive()
                 return await self.connection_handler(session)
         self.sessions.append(asyncio.create_task(session_wrapper()))

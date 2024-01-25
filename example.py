@@ -9,6 +9,9 @@ from datetime import datetime
 import aiosocketproto
 
 
+DEBUG_MODE = False
+
+
 class DatetimeSerializer(aiosocketproto.SerializerType):
     INSTANCE = datetime
 
@@ -65,14 +68,14 @@ class Example:
 
     async def create_server(self):
         try:
-            server = await aiosocketproto.start_server([9999], self.connection)
+            server = await aiosocketproto.start_server([9999], self.connection, debug_mode=DEBUG_MODE)
             self.server_created.set()
             await server.idle()
         except asyncio.exceptions.CancelledError:
             pass
 
     async def client_connect(self):
-        client = await aiosocketproto.connect('0.0.0.0', 9999)
+        client = await aiosocketproto.connect('0.0.0.0', 9999, debug_mode=DEBUG_MODE)
         client.add_serializer(DatetimeSerializer)
 
         for type_name, value in self.TEST_TYPES.items():
@@ -97,4 +100,4 @@ class Example:
         await self.client_connect()
 
 
-asyncio.run(Example().run(), debug=True)
+asyncio.run(Example().run(), debug=DEBUG_MODE)

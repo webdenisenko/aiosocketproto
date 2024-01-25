@@ -20,11 +20,11 @@ class Methods(ABC):
         self.custom_serializers = {}
 
     @classmethod
-    async def connect(cls: Type["AsyncSocketClient"], host: str, port: int):
+    async def connect(cls: Type["AsyncSocketClient"], host: str, port: int, debug_mode: bool = False):
         """ Connect to a server and Create socket client instance """
 
         reader, writer = await asyncio.open_connection(host, port)
-        session = cls(reader, writer)
+        session = cls(reader, writer, debug_mode=debug_mode)
         await session._keep_alive()
         return session
 
@@ -59,12 +59,26 @@ class Methods(ABC):
         await self._queue_send.put(packet)
 
         # waiting for execute
-        await packet.sent.wait()
+        while self.is_connected:
+            try:
+                await asyncio.wait_for(packet.sent.wait(), timeout=1)
+                break
+            except asyncio.TimeoutError:
+                pass
+        else:
+            raise ConnectionRefusedError('connection refused')
 
     async def receive(self: "AsyncSocketClient"):
         """ Waiting for income Packet """
 
-        packet_data = await self._received_packets.get()
+        while self.is_connected:
+            try:
+                packet_data = await asyncio.wait_for(self._received_packets.get(), timeout=1)
+                break
+            except asyncio.TimeoutError:
+                pass
+        else:
+            raise ConnectionRefusedError('connection refused')
 
         # read JSON from bytes
         json_string = base64.b64decode(packet_data)

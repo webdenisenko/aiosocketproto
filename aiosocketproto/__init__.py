@@ -5,4 +5,4 @@ from aiosocketproto.server import AsyncSocketServer
 connect = AsyncSocketClient.connect
 start_server = AsyncSocketServer.start
 
-__version__ = '0.0.14'
+__version__ = '0.0.15'
